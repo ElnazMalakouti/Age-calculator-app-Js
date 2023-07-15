@@ -1,9 +1,10 @@
-const Input = ({ lableText, palceholder, errorMessage, setErrorMessage , value, onChange }) => {
+const Input = ({ lableText, palceholder, errorMessage, setErrorMessage, value, onChange , maxLength }) => {
     return (
         <>
             <div className="flex flex-col justify-start items-start gap-2">
                 <label className={`${errorMessage ? 'text-red-500' : 'text-[#6E6E6E]'} text-xs 2xl:text-2xl font-[Bold]`}>{lableText}</label>
                 <input
+                    maxLength={maxLength}
                     value={value}
                     onChange={onChange}
                     placeholder={palceholder}

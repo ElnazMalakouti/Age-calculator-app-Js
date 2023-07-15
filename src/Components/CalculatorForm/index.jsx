@@ -76,16 +76,16 @@ const CalculatorForm = () => {
 
 
 
-
         if (enteredYearValue == null) {
             setYearErrorMessage('This field is required')
-        }
-
-        if (enteredYearValue > currentYear) {
+        } else if (enteredYearValue > currentYear) {
             setYearErrorMessage('Must be in the past')
         } else {
             setYearErrorMessage(null)
         }
+
+
+
 
         if ((+enteredYearValue % 4 == 0 && +enteredYearValue % 100 !== 0) || +enteredYearValue % 400 == 0) {
             if ((enteredMonthValue == 2) && (enteredDayValue == 30 || enteredDayValue == 31)) {
@@ -105,6 +105,7 @@ const CalculatorForm = () => {
 
                 <div className="w-full md:w-auto md:mr-auto flex justify-between md:justify-center items-center gap-2 lg:gap-4 2xl:gap-8">
                     <Input
+                        maxLength={2}
                         lableText={'Day'}
                         palceholder={'DD'}
                         errorMessage={dayErrorMessage}
@@ -113,6 +114,7 @@ const CalculatorForm = () => {
                         onChange={(e) => setEnteredDayValue(e.target.value)}
                     />
                     <Input
+                        maxLength={2}
                         lableText={'Month'}
                         palceholder={'MM'}
                         errorMessage={monthErrorMessage}
@@ -121,6 +123,7 @@ const CalculatorForm = () => {
                         onChange={(e) => setEnteredMonthValue(e.target.value)}
                     />
                     <Input
+                        maxLength={4}
                         lableText={'Year'}
                         palceholder={'YYYY'}
                         errorMessage={yearErrorMessage}
