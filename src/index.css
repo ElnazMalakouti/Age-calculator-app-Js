@@ -19,7 +19,7 @@ html , body , #root{
 
 
 @font-face {
-  font-family: 'Black-italic';
+  font-family: 'Bold-italic';
   src: url('../public/fonts/Poppins-BoldItalic.ttf');
 }
 
