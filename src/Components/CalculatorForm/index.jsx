@@ -14,18 +14,21 @@ const CalculatorForm = () => {
                         palceholder={'DD'}
                         inputErrorMode={inputErrorMode}
                         setInputErrorMode={setInputErrorMode}
+                        errorMessage={'Must be a valid day'}
                     />
                     <Input
                         lableText={'Month'}
                         palceholder={'MM'}
                         inputErrorMode={inputErrorMode}
                         setInputErrorMode={setInputErrorMode}
+                        errorMessage={'Must be a valid month'}
                     />
                     <Input
                         lableText={'Year'}
                         palceholder={'YYYY'}
                         inputErrorMode={inputErrorMode}
                         setInputErrorMode={setInputErrorMode}
+                        errorMessage={'Must be in the past'}
                     />
                 </div>
             </div>
