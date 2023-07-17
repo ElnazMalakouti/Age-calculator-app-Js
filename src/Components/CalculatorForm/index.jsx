@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Input from "../Input"
 
 const CalculatorForm = () => {
@@ -17,7 +17,7 @@ const CalculatorForm = () => {
     const [monthResult, setMonthResult] = useState()
     const [yearResult, setYearResult] = useState()
 
-    const months31days = ['1', '3', '5', '7', '8', '10', '12']
+    const months31days = ['1' ,'01', '3','03', '5','05', '7','07', '8','08', '10', '12']
     // const month30days = [4, 6, 9, 11]
 
     const moment = require('moment');
@@ -119,10 +119,18 @@ const CalculatorForm = () => {
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
-        }
+        } 
 
 
     }
+
+    useEffect(()=>{
+        if(dayResult && monthResult && yearResult){
+            setDayErrorMesaage('')
+            setMonthErrorMessage('')
+            setYearErrorMessage('')
+        }
+    },[dayResult,monthResult,yearResult])
 
     return (
         <>
