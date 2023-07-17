@@ -26,7 +26,6 @@ const CalculatorForm = () => {
     const currentYear = now.getFullYear();
 
     function calculateAge(birthDate) {
-        console.log(birthDate)
         checkEnteredValues()
         const today = moment();
         const birth = moment(birthDate, 'YYYY-MM-DD');
@@ -47,16 +46,25 @@ const CalculatorForm = () => {
 
 
 
-        if (enteredDayValue == null) {
+        if (enteredDayValue == null || enteredDayValue == '') {
             setDayErrorMesaage('This field is required')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         }
 
         if (enteredDayValue == 31) {
             if (!(months31days.includes(enteredMonthValue))) {
                 setDayErrorMesaage('Must be a valid date')
+                setYearResult(null)
+                setMonthResult(null)
+                setDayResult(null)
             }
         } else if (enteredDayValue < 1 || enteredDayValue > 31) {
             setDayErrorMesaage('Must be a valid day')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         } else {
             setDayErrorMesaage(null)
         }
@@ -65,10 +73,16 @@ const CalculatorForm = () => {
 
 
 
-        if (enteredMonthValue == null) {
+        if (enteredMonthValue == null || enteredMonthValue == '') {
             setMonthErrorMessage('This field is required')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         } else if (enteredMonthValue < 1 || enteredMonthValue > 12) {
             setMonthErrorMessage('Must be a valid month')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         } else {
             setMonthErrorMessage(null)
         }
@@ -76,10 +90,16 @@ const CalculatorForm = () => {
 
 
 
-        if (enteredYearValue == null) {
+        if (enteredYearValue == null || enteredYearValue == '') {
             setYearErrorMessage('This field is required')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         } else if (enteredYearValue > currentYear) {
             setYearErrorMessage('Must be in the past')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         } else {
             setYearErrorMessage(null)
         }
@@ -90,9 +110,15 @@ const CalculatorForm = () => {
         if ((+enteredYearValue % 4 == 0 && +enteredYearValue % 100 !== 0) || +enteredYearValue % 400 == 0) {
             if ((enteredMonthValue == 2) && (enteredDayValue == 30 || enteredDayValue == 31)) {
                 setDayErrorMesaage('Must be a valid date')
+                setYearResult(null)
+                setMonthResult(null)
+                setDayResult(null)
             }
         } else if ((enteredMonthValue == 2) && (enteredDayValue == 29 || enteredDayValue == 30 || enteredDayValue == 31)) {
             setDayErrorMesaage('Must be a valid date')
+            setYearResult(null)
+            setMonthResult(null)
+            setDayResult(null)
         }
 
 
