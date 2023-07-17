@@ -16,6 +16,10 @@ html , body , #root{
   box-sizing: border-box;
 }
 
+input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        display: none;
+      }
 
 
 @font-face {

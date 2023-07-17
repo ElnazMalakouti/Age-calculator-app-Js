@@ -18,33 +18,36 @@ const CalculatorForm = () => {
     const [yearResult, setYearResult] = useState()
 
     const months31days = ['1', '3', '5', '7', '8', '10', '12']
-    const month30days = [4, 6, 9, 11]
+    // const month30days = [4, 6, 9, 11]
 
     const moment = require('moment');
 
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
     function calculateAge(birthDate) {
+        console.log(birthDate)
         checkEnteredValues()
         const today = moment();
         const birth = moment(birthDate, 'YYYY-MM-DD');
 
-        const ageDuration = moment.duration(today.diff(birth));
-        // if (ageDuration.isValid()) {
-        //     setDayErrorMesaage(null)
-        //     setMonthErrorMessage(null)
-        //     setYearErrorMessage(null)
-        // }
-        const years = ageDuration.years() > 0 ? ageDuration.years() : '--';
-        const months = ageDuration.months() > 0 ? ageDuration.months() : '--';
-        const days = ageDuration.days() > 0 ? ageDuration.days() : '--';
+        if (enteredYearValue && enteredMonthValue && enteredDayValue) {
+            console.log(enteredYearValue) 
+            console.log(enteredMonthValue)
+            console.log(enteredDayValue)
+            const ageDuration = moment.duration(today.diff(birth));
+            const years = ageDuration.years() > 0 ? ageDuration.years() : 0;
+            const months = ageDuration.months() > 0 ? ageDuration.months() : 0;
+            const days = ageDuration.days() > 0 ? ageDuration.days() : 0;
+            setYearResult(years)
+            setMonthResult(months)
+            setDayResult(days)
+        }
 
-        setYearResult(years)
-        setMonthResult(months)
-        setDayResult(days)
     }
 
     const checkEnteredValues = () => {
-        const now = new Date();
-        const currentYear = now.getFullYear();
+
 
 
         if (enteredDayValue == null) {
@@ -111,7 +114,7 @@ const CalculatorForm = () => {
                         errorMessage={dayErrorMessage}
                         setErrorMessage={setDayErrorMesaage}
                         value={enteredDayValue}
-                        onChange={(e) => setEnteredDayValue(e.target.value)}
+                        onChange={(e) => +e.target.value < 32 ? setEnteredDayValue(e.target.value) : 0}
                     />
                     <Input
                         maxLength={2}
@@ -120,7 +123,7 @@ const CalculatorForm = () => {
                         errorMessage={monthErrorMessage}
                         setErrorMessage={setMonthErrorMessage}
                         value={enteredMonthValue}
-                        onChange={(e) => setEnteredMonthValue(e.target.value)}
+                        onChange={(e) => +e.target.value < 13 ? setEnteredMonthValue(e.target.value) : 0}
                     />
                     <Input
                         maxLength={4}
@@ -129,13 +132,13 @@ const CalculatorForm = () => {
                         errorMessage={yearErrorMessage}
                         setErrorMessage={setYearErrorMessage}
                         value={enteredYearValue}
-                        onChange={(e) => setEnteredYearValue(e.target.value)}
+                        onChange={(e) => +e.target.value <= currentYear ? setEnteredYearValue(e.target.value) : 0}
                     />
                 </div>
 
                 <div className="w-full h-0.5 2xl:h-2 bg-[#EAEAEA]">
                     <button
-                        onClick={() => calculateAge(`${enteredYearValue}-${enteredMonthValue}-${enteredDayValue}`)}
+                        onClick={() => calculateAge(`${enteredYearValue}${enteredMonthValue.length == 1 ? `0${enteredMonthValue}` : enteredMonthValue}${enteredDayValue.length == 1 ? `0${enteredDayValue}` : enteredDayValue}`)}
                         className="w-12 h-12 2xl:w-24 2xl:h-24 rounded-full bg-[#864CFF] hover:bg-[#151515] translate-y-[-50%] mx-auto md:mr-0 md:ml-auto flex justify-center items-center"
                     >
                         <img alt="arrow-icon" src="/pics/icon-arrow.svg" className="w-6 h-6 2xl:w-12 2xl:h-12" />
@@ -144,15 +147,15 @@ const CalculatorForm = () => {
 
                 <div className="flex flex-col mr-auto font-[Bold-italic] text-[3rem] md:text-[4rem]">
                     <p className="flex gap-1 my-[-0.5rem]">
-                        <span className="text-[#864CFF]">{yearResult ? yearResult : '--'}</span>
+                        <span className="text-[#864CFF]">{yearResult > 0 ? yearResult : yearResult == 0 ? 0 : '--'}</span>
                         <span>years</span>
                     </p>
                     <p className="flex gap-1 my-[-0.5rem]">
-                        <span className="text-[#864CFF]">{monthResult ? monthResult : '--'}</span>
+                        <span className="text-[#864CFF]">{monthResult > 0 ? monthResult : monthResult == 0 ? 0 : '--'}</span>
                         <span>months</span>
                     </p>
                     <p className="flex gap-1 my-[-0.5rem]">
-                        <span className="text-[#864CFF]">{dayResult ? dayResult : '--'}</span>
+                        <span className="text-[#864CFF]">{dayResult > 0 ? dayResult : dayResult == 0 ? 0 : '--'}</span>
                         <span>days</span>
                     </p>
                 </div>

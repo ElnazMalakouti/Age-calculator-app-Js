@@ -4,6 +4,7 @@ const Input = ({ lableText, palceholder, errorMessage, setErrorMessage, value, o
             <div className="flex flex-col justify-start items-start gap-2">
                 <label className={`${errorMessage ? 'text-red-500' : 'text-[#6E6E6E]'} text-xs 2xl:text-2xl font-[Bold]`}>{lableText}</label>
                 <input
+                type="number"
                     maxLength={maxLength}
                     value={value}
                     onChange={onChange}
