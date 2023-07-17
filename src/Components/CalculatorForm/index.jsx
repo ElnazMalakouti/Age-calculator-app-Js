@@ -32,9 +32,6 @@ const CalculatorForm = () => {
         const birth = moment(birthDate, 'YYYY-MM-DD');
 
         if (enteredYearValue && enteredMonthValue && enteredDayValue) {
-            console.log(enteredYearValue) 
-            console.log(enteredMonthValue)
-            console.log(enteredDayValue)
             const ageDuration = moment.duration(today.diff(birth));
             const years = ageDuration.years() > 0 ? ageDuration.years() : 0;
             const months = ageDuration.months() > 0 ? ageDuration.months() : 0;
@@ -138,7 +135,7 @@ const CalculatorForm = () => {
 
                 <div className="w-full h-0.5 2xl:h-2 bg-[#EAEAEA]">
                     <button
-                        onClick={() => calculateAge(`${enteredYearValue}${enteredMonthValue.length == 1 ? `0${enteredMonthValue}` : enteredMonthValue}${enteredDayValue.length == 1 ? `0${enteredDayValue}` : enteredDayValue}`)}
+                        onClick={() => calculateAge(`${enteredYearValue}${enteredMonthValue?.length == 1 ? `0${enteredMonthValue}` : enteredMonthValue}${enteredDayValue?.length == 1 ? `0${enteredDayValue}` : enteredDayValue}`)}
                         className="w-12 h-12 2xl:w-24 2xl:h-24 rounded-full bg-[#864CFF] hover:bg-[#151515] translate-y-[-50%] mx-auto md:mr-0 md:ml-auto flex justify-center items-center"
                     >
                         <img alt="arrow-icon" src="/pics/icon-arrow.svg" className="w-6 h-6 2xl:w-12 2xl:h-12" />
