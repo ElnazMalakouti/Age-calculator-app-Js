@@ -17,54 +17,76 @@ const CalculatorForm = () => {
     const [monthResult, setMonthResult] = useState()
     const [yearResult, setYearResult] = useState()
 
-    const months31days = ['1' ,'01', '3','03', '5','05', '7','07', '8','08', '10', '12']
-    // const month30days = [4, 6, 9, 11]
+    const [errorMode, setErrorMode] = useState(false)
 
-    const moment = require('moment');
+    const months31days = ['1', '01', '3', '03', '5', '05', '7', '07', '8', '08', '10', '12']
+    // const month30days = [4, 6, 9, 11]
 
     const now = new Date();
     const currentYear = now.getFullYear();
 
     function calculateAge(birthDate) {
         checkEnteredValues()
-        const today = moment();
-        const birth = moment(birthDate, 'YYYY-MM-DD');
 
         if (enteredYearValue && enteredMonthValue && enteredDayValue) {
-            const ageDuration = moment.duration(today.diff(birth));
-            const years = ageDuration.years() > 0 ? ageDuration.years() : 0;
-            const months = ageDuration.months() > 0 ? ageDuration.months() : 0;
-            const days = ageDuration.days() > 0 ? ageDuration.days() : 0;
-            setYearResult(years)
-            setMonthResult(months)
-            setDayResult(days)
-        }
+            if (checkEnteredValues()) {
+                var today = new Date();
+                var birthDate = new Date(birthDate);
 
+                var years = today.getFullYear() - birthDate.getFullYear();
+                var months = today.getMonth() - birthDate.getMonth();
+                var days = today.getDate() - birthDate.getDate();
+
+                // Check if the birth date hasn't occurred yet this year
+                if (months < 0 || (months === 0 && days < 0)) {
+                    years--;
+                    months += 12;
+                }
+
+                // Check if the birth date hasn't occurred yet this month
+                if (days < 0) {
+                    months--;
+                    var lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 0);
+                    days += lastMonth.getDate();
+                }
+
+                setYearResult(years)
+                setMonthResult(months)
+                setDayResult(days)
+            }
+        }
     }
 
-    const checkEnteredValues = () => {
 
+    const checkEnteredValues = () => {
+        let result = true
 
 
         if (enteredDayValue == null || enteredDayValue == '') {
+            // setErrorMode(true)
             setDayErrorMesaage('This field is required')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
+            result = false
         }
 
         if (enteredDayValue == 31) {
             if (!(months31days.includes(enteredMonthValue))) {
+                // setErrorMode(true)
                 setDayErrorMesaage('Must be a valid date')
                 setYearResult(null)
                 setMonthResult(null)
                 setDayResult(null)
+                result = false
             }
         } else if (enteredDayValue < 1 || enteredDayValue > 31) {
+            // setErrorMode(true)
             setDayErrorMesaage('Must be a valid day')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
+            result = false
         } else {
             setDayErrorMesaage(null)
         }
@@ -74,15 +96,19 @@ const CalculatorForm = () => {
 
 
         if (enteredMonthValue == null || enteredMonthValue == '') {
+            // setErrorMode(true)
             setMonthErrorMessage('This field is required')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
+            result = false
         } else if (enteredMonthValue < 1 || enteredMonthValue > 12) {
+            // setErrorMode(true)
             setMonthErrorMessage('Must be a valid month')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
+            result = false
         } else {
             setMonthErrorMessage(null)
         }
@@ -91,15 +117,19 @@ const CalculatorForm = () => {
 
 
         if (enteredYearValue == null || enteredYearValue == '') {
+            // setErrorMode(true)
             setYearErrorMessage('This field is required')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
+            result = false
         } else if (enteredYearValue > currentYear) {
+            // setErrorMode(true)
             setYearErrorMessage('Must be in the past')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
+            result = false
         } else {
             setYearErrorMessage(null)
         }
@@ -113,24 +143,28 @@ const CalculatorForm = () => {
                 setYearResult(null)
                 setMonthResult(null)
                 setDayResult(null)
+                result = false
             }
         } else if ((enteredMonthValue == 2) && (enteredDayValue == 29 || enteredDayValue == 30 || enteredDayValue == 31)) {
+            // setErrorMode(true)
             setDayErrorMesaage('Must be a valid date')
             setYearResult(null)
             setMonthResult(null)
             setDayResult(null)
-        } 
+            result = false
+        }
 
+        return result
 
     }
 
-    useEffect(()=>{
-        if(dayResult && monthResult && yearResult){
+    useEffect(() => {
+        if (dayResult && monthResult && yearResult) {
             setDayErrorMesaage('')
             setMonthErrorMessage('')
             setYearErrorMessage('')
         }
-    },[dayResult,monthResult,yearResult])
+    }, [dayResult, monthResult, yearResult])
 
     return (
         <>
@@ -145,7 +179,14 @@ const CalculatorForm = () => {
                         errorMessage={dayErrorMessage}
                         setErrorMessage={setDayErrorMesaage}
                         value={enteredDayValue}
-                        onChange={(e) => +e.target.value < 32 ? setEnteredDayValue(e.target.value) : 0}
+                        onChange={(e) => {
+                            setDayErrorMesaage(null)
+                            if (e.target.value[0] == 0 && e.target.value.length == 2) {
+                                setEnteredDayValue(e.target.value.substring(1))
+                            } else if (+e.target.value < 32) {
+                                setEnteredDayValue(e.target.value)
+                            }
+                        }}
                     />
                     <Input
                         maxLength={2}
@@ -154,7 +195,14 @@ const CalculatorForm = () => {
                         errorMessage={monthErrorMessage}
                         setErrorMessage={setMonthErrorMessage}
                         value={enteredMonthValue}
-                        onChange={(e) => +e.target.value < 13 ? setEnteredMonthValue(e.target.value) : 0}
+                        onChange={(e) => {
+                            setMonthErrorMessage(null)
+                            if (e.target.value[0] == 0 && e.target.value.length == 2) {
+                                setEnteredMonthValue(e.target.value.substring(1))
+                            } else if (+e.target.value < 13) {
+                                setEnteredMonthValue(e.target.value)
+                            }
+                        }}
                     />
                     <Input
                         maxLength={4}
@@ -169,7 +217,7 @@ const CalculatorForm = () => {
 
                 <div className="w-full h-0.5 2xl:h-2 bg-[#EAEAEA]">
                     <button
-                        onClick={() => calculateAge(`${enteredYearValue}${enteredMonthValue?.length == 1 ? `0${enteredMonthValue}` : enteredMonthValue}${enteredDayValue?.length == 1 ? `0${enteredDayValue}` : enteredDayValue}`)}
+                        onClick={() => calculateAge(`${enteredYearValue}-${enteredMonthValue?.length == 1 ? `0${enteredMonthValue}` : enteredMonthValue}-${enteredDayValue?.length == 1 ? `0${enteredDayValue}` : enteredDayValue}`)}
                         className="w-12 h-12 2xl:w-24 2xl:h-24 rounded-full bg-[#864CFF] hover:bg-[#151515] translate-y-[-50%] mx-auto md:mr-0 md:ml-auto flex justify-center items-center"
                     >
                         <img alt="arrow-icon" src="/pics/icon-arrow.svg" className="w-6 h-6 2xl:w-12 2xl:h-12" />
